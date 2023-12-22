@@ -28,27 +28,27 @@ func (r *OrderRepository) Save(ctx context.Context, order *entity.Order) error {
 	return nil
 }
 
-func (r *OrderRepository) List(ctx context.Context) error {
+func (r *OrderRepository) List(ctx context.Context) ([]entity.Order, error) {
 	cur, err := r.Collection.Find(ctx, bson.D{})
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	var orders []bson.M
+	var orders []entity.Order
 
 	defer cur.Close(ctx)
 
 	for cur.Next(ctx) {
 
-		var order bson.M
+		var order entity.Order
 
 		if err := cur.Decode(&order); err != nil {
-			return err
+			return nil, err
 		}
 
 		orders = append(orders, order)
 	}
 
-	return nil
+	return orders, nil
 }

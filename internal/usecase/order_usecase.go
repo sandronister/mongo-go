@@ -55,6 +55,23 @@ func (o *OrderUseCase) Save(input OrderInputDTO) (OrderOutputDTO, error) {
 	}, nil
 }
 
-func (o *OrderUseCase) List() {
-	o.repository.List(o.ctx)
+func (o *OrderUseCase) List() ([]OrderOutputDTO, error) {
+	orders, err := o.repository.List(o.ctx)
+
+	if err != nil {
+		return []OrderOutputDTO{}, err
+	}
+
+	orderOutput := []OrderOutputDTO{}
+
+	for _, order := range orders {
+		orderOutput = append(orderOutput, OrderOutputDTO{
+			ID:         order.ID,
+			Price:      order.Price,
+			Tax:        order.Tax,
+			FinalPrice: order.FinalPrice,
+		})
+	}
+
+	return orderOutput, nil
 }

@@ -11,8 +11,8 @@ func orderHandler(r *gin.Engine, db *mongo.Database) {
 
 	orderRoute := r.Group("orders")
 	{
-		orderRoute.POST("/", orderHandler.Create)
-		orderRoute.GET("/", orderHandler.List)
+		orderRoute.POST("", orderHandler.Create)
+		orderRoute.GET("", orderHandler.List)
 	}
 }
 
