@@ -24,7 +24,7 @@ func (r *OrderRepository) Save(ctx context.Context, order *entity.Order) error {
 		return err
 	}
 
-	order.ID = req.InsertedID.(primitive.ObjectID).Hex()
+	order.ID = req.InsertedID.(primitive.ObjectID)
 	return nil
 }
 
