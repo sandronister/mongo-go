@@ -2,10 +2,10 @@ package database
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/sandronister/mongo-go/internal/entity"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -24,7 +24,7 @@ func (r *OrderRepository) Save(ctx context.Context, order *entity.Order) error {
 		return err
 	}
 
-	order.ID = fmt.Sprintf("%v", req.InsertedID)
+	order.ID = req.InsertedID.(primitive.ObjectID).Hex()
 	return nil
 }
 
