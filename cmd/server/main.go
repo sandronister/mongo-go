@@ -16,5 +16,5 @@ func main() {
 	catch.Execute(err)
 	mongoClient, err := mongo.Connect(ctx, options.Client().ApplyURI(config.DBHost))
 	catch.Execute(err)
-	routes.HandlerRequest(config.WebPort, mongoClient.Database(config.DBName))
+	routes.HandlerRequest(ctx, config.WebPort, mongoClient.Database(config.DBName))
 }
