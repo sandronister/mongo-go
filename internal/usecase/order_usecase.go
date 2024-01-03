@@ -19,11 +19,11 @@ type OrderOutputDTO struct {
 }
 
 type OrderUseCase struct {
-	ctx        context.Context
+	ctx        *context.Context
 	repository entity.OrderRepositoryInterface
 }
 
-func NewOrderUseCase(ctx context.Context, repository entity.OrderRepositoryInterface) *OrderUseCase {
+func NewOrderUseCase(ctx *context.Context, repository entity.OrderRepositoryInterface) *OrderUseCase {
 	return &OrderUseCase{
 		ctx:        ctx,
 		repository: repository,
@@ -40,11 +40,11 @@ func (o *OrderUseCase) Save(input OrderInputDTO) (OrderOutputDTO, error) {
 	err = order.CalculateFinalPrice()
 
 	if err != nil {
-		return OrderOutputDTO{}, nil
+		return OrderOutputDTO{}, err
 	}
 
 	if err := o.repository.Save(o.ctx, order); err != nil {
-		return OrderOutputDTO{}, nil
+		return OrderOutputDTO{}, err
 	}
 
 	return OrderOutputDTO{

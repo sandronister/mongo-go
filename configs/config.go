@@ -1,6 +1,8 @@
 package configs
 
-import "github.com/spf13/viper"
+import (
+	"github.com/spf13/viper"
+)
 
 type Conf struct {
 	DBHost     string `mapstructure:"DB_HOST"`
@@ -8,14 +10,14 @@ type Conf struct {
 	DBPassword string `mapstructure:"DB_PASSWORD"`
 	DBName     string `mapstructure:"DB_NAME"`
 	WebPort    string `mapstructure:"WEB_PORT"`
+	EnvMode    string `mapstructure:"ENV_MODE"`
 }
 
 func LoadConfig(path string) (*Conf, error) {
 	var cfg *Conf
 	viper.SetConfigName("go_mongo")
 	viper.SetConfigType("env")
-	viper.AddConfigPath(path)
-	viper.SetConfigFile(".env")
+	viper.SetConfigFile(path + ".env")
 	viper.AutomaticEnv()
 	err := viper.ReadInConfig()
 	if err != nil {

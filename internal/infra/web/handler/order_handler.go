@@ -11,10 +11,10 @@ import (
 
 type OrderHandler struct {
 	repository entity.OrderRepositoryInterface
-	ctx        context.Context
+	ctx        *context.Context
 }
 
-func NewOrderHandler(ctx context.Context, repository entity.OrderRepositoryInterface) *OrderHandler {
+func NewOrderHandler(ctx *context.Context, repository entity.OrderRepositoryInterface) *OrderHandler {
 	return &OrderHandler{
 		ctx:        ctx,
 		repository: repository,

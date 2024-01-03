@@ -17,8 +17,8 @@ func NewOrderRepository(collection *mongo.Collection) *OrderRepository {
 	return &OrderRepository{Collection: collection}
 }
 
-func (r *OrderRepository) Save(ctx context.Context, order *entity.Order) error {
-	req, err := r.Collection.InsertOne(ctx, order)
+func (r *OrderRepository) Save(ctx *context.Context, order *entity.Order) error {
+	req, err := r.Collection.InsertOne(*ctx, order)
 
 	if err != nil {
 		return err
@@ -28,8 +28,8 @@ func (r *OrderRepository) Save(ctx context.Context, order *entity.Order) error {
 	return nil
 }
 
-func (r *OrderRepository) List(ctx context.Context) ([]entity.Order, error) {
-	cur, err := r.Collection.Find(ctx, bson.D{})
+func (r *OrderRepository) List(ctx *context.Context) ([]entity.Order, error) {
+	cur, err := r.Collection.Find(*ctx, bson.D{})
 
 	if err != nil {
 		return nil, err
@@ -37,9 +37,9 @@ func (r *OrderRepository) List(ctx context.Context) ([]entity.Order, error) {
 
 	var orders []entity.Order
 
-	defer cur.Close(ctx)
+	defer cur.Close(*ctx)
 
-	for cur.Next(ctx) {
+	for cur.Next(*ctx) {
 
 		var order entity.Order
 
