@@ -1,15 +1,13 @@
 package routes
 
 import (
-	"context"
-
 	"github.com/gin-gonic/gin"
 	"github.com/sandronister/mongo-go/internal/infra/di"
-	"go.mongodb.org/mongo-driver/mongo"
+	"github.com/sandronister/mongo-go/internal/infra/web/handler"
 )
 
-func orderHandler(ctx context.Context, r *gin.Engine, db *mongo.Database) {
-	orderHandler := di.ConfigOrderHandlerDI(ctx, db)
+func orderHandler(hc *handler.HandlerConfig, r *gin.Engine) {
+	orderHandler := di.ConfigOrderHandlerDI(hc)
 
 	orderRoute := r.Group("orders")
 	{
@@ -18,8 +16,8 @@ func orderHandler(ctx context.Context, r *gin.Engine, db *mongo.Database) {
 	}
 }
 
-func HandlerRequest(ctx context.Context, port string, db *mongo.Database) {
+func HandlerRequest(config *handler.HandlerConfig) {
 	r := gin.Default()
-	orderHandler(ctx, r, db)
-	r.Run(port)
+	orderHandler(config, r)
+	r.Run(config.Port)
 }
