@@ -1,8 +1,6 @@
 package main
 
 import (
-	"context"
-
 	"github.com/sandronister/mongo-go/configs"
 	"github.com/sandronister/mongo-go/internal/infra/database/connection"
 	"github.com/sandronister/mongo-go/internal/infra/web/handler"
@@ -11,10 +9,9 @@ import (
 )
 
 func main() {
-	ctx := context.Background()
 	config, err := configs.LoadConfig("../../")
 	errors.Catch(err)
-	database, err := connection.GetDatabase(&ctx, config)
+	database, err := connection.GetDatabase(config)
 	errors.Catch(err)
-	routes.HandlerRequest(handler.NewHandlerConfig(&ctx, config, database))
+	routes.HandlerRequest(handler.NewHandlerConfig(config, database))
 }

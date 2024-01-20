@@ -1,8 +1,6 @@
 package usecase
 
 import (
-	"context"
-
 	"github.com/sandronister/mongo-go/internal/entity"
 )
 
@@ -19,13 +17,11 @@ type OrderOutputDTO struct {
 }
 
 type OrderUseCase struct {
-	ctx        *context.Context
 	repository entity.OrderRepositoryInterface
 }
 
-func NewOrderUseCase(ctx *context.Context, repository entity.OrderRepositoryInterface) *OrderUseCase {
+func NewOrderUseCase(repository entity.OrderRepositoryInterface) *OrderUseCase {
 	return &OrderUseCase{
-		ctx:        ctx,
 		repository: repository,
 	}
 }
@@ -43,7 +39,7 @@ func (o *OrderUseCase) Save(input OrderInputDTO) (OrderOutputDTO, error) {
 		return OrderOutputDTO{}, err
 	}
 
-	if err := o.repository.Save(o.ctx, order); err != nil {
+	if err := o.repository.Save(order); err != nil {
 		return OrderOutputDTO{}, err
 	}
 
@@ -56,7 +52,7 @@ func (o *OrderUseCase) Save(input OrderInputDTO) (OrderOutputDTO, error) {
 }
 
 func (o *OrderUseCase) List() ([]OrderOutputDTO, error) {
-	orders, err := o.repository.List(o.ctx)
+	orders, err := o.repository.List()
 
 	if err != nil {
 		return []OrderOutputDTO{}, err

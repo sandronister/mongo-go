@@ -8,8 +8,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func GetDatabase(ctx *context.Context, config *configs.Conf) (*mongo.Database, error) {
-	mongoClient, err := mongo.Connect(*ctx, options.Client().ApplyURI(config.DBHost))
+func GetDatabase(config *configs.Conf) (*mongo.Database, error) {
+	ctx := context.Background()
+	mongoClient, err := mongo.Connect(ctx, options.Client().ApplyURI(config.DBHost))
 
 	if err != nil {
 		return nil, err
