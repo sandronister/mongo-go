@@ -9,5 +9,5 @@ import (
 func ConfigOrderHandlerDI(hc *handler.HandlerConfig) *handler.OrderHandler {
 	collection := hc.Db.Collection(string(enum.Order))
 	repository := database.NewOrderRepository(collection)
-	return handler.NewOrderHandler(hc.Ctx, repository)
+	return handler.NewOrderHandler(repository)
 }

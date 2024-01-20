@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"context"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,12 +10,10 @@ import (
 
 type OrderHandler struct {
 	repository entity.OrderRepositoryInterface
-	ctx        *context.Context
 }
 
-func NewOrderHandler(ctx *context.Context, repository entity.OrderRepositoryInterface) *OrderHandler {
+func NewOrderHandler(repository entity.OrderRepositoryInterface) *OrderHandler {
 	return &OrderHandler{
-		ctx:        ctx,
 		repository: repository,
 	}
 }
@@ -30,7 +27,7 @@ func (o *OrderHandler) Create(c *gin.Context) {
 		return
 	}
 
-	usecase := usecase.NewOrderUseCase(o.ctx, o.repository)
+	usecase := usecase.NewOrderUseCase(o.repository)
 	output, err := usecase.Save(orderDTO)
 
 	if err != nil {
@@ -43,7 +40,7 @@ func (o *OrderHandler) Create(c *gin.Context) {
 }
 
 func (o *OrderHandler) List(c *gin.Context) {
-	usecase := usecase.NewOrderUseCase(o.ctx, o.repository)
+	usecase := usecase.NewOrderUseCase(o.repository)
 	output, err := usecase.List()
 
 	if err != nil {
