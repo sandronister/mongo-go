@@ -7,7 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func OrderUseCaseDI(db *mongo.Database) *usecase.OrderUseCase {
+func NewOrderUseCase(db *mongo.Database) *usecase.OrderUseCase {
 	collection := db.Collection(string(enum.Order))
 	repository := database.NewOrderRepository(collection)
 	return usecase.NewOrderUseCase(repository)
