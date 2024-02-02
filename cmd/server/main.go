@@ -14,7 +14,7 @@ func main() {
 	database, err := connection.GetDatabase(config)
 	errors.Catch(err)
 
-	orderUseCase := di.OrderUseCaseDI(database)
+	orderUseCase := di.NewOrderUseCase(database)
 
 	webServer := server.NewWebServer(config.WebPort)
 	webServer.AddHandlerOrder(orderUseCase)
