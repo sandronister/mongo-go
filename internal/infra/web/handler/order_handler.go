@@ -4,17 +4,16 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sandronister/mongo-go/internal/entity"
 	"github.com/sandronister/mongo-go/internal/usecase"
 )
 
 type OrderHandler struct {
-	repository entity.OrderRepositoryInterface
+	orderUseCase *usecase.OrderUseCase
 }
 
-func NewOrderHandler(repository entity.OrderRepositoryInterface) *OrderHandler {
+func NewOrderHandler(orderUseCase *usecase.OrderUseCase) *OrderHandler {
 	return &OrderHandler{
-		repository: repository,
+		orderUseCase: orderUseCase,
 	}
 }
 
@@ -27,8 +26,7 @@ func (o *OrderHandler) Create(c *gin.Context) {
 		return
 	}
 
-	usecase := usecase.NewOrderUseCase(o.repository)
-	output, err := usecase.Save(orderDTO)
+	output, err := o.orderUseCase.Save(orderDTO)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -40,8 +38,7 @@ func (o *OrderHandler) Create(c *gin.Context) {
 }
 
 func (o *OrderHandler) List(c *gin.Context) {
-	usecase := usecase.NewOrderUseCase(o.repository)
-	output, err := usecase.List()
+	output, err := o.orderUseCase.List()
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
