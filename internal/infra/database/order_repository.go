@@ -41,15 +41,8 @@ func (r *OrderRepository) List() ([]entity.Order, error) {
 
 	defer cur.Close(ctx)
 
-	for cur.Next(ctx) {
-
-		var order entity.Order
-
-		if err := cur.Decode(&order); err != nil {
-			return nil, err
-		}
-
-		orders = append(orders, order)
+	if err = cur.All(ctx, &orders); err != nil {
+		return orders, err
 	}
 
 	return orders, nil
