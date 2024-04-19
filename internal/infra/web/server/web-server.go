@@ -1,6 +1,8 @@
 package server
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/sandronister/mongo-go/internal/infra/web/handler"
 	"github.com/sandronister/mongo-go/internal/usecase"
@@ -31,5 +33,5 @@ func (w *WebServer) AddHandlerOrder(order *usecase.OrderUseCase) {
 }
 
 func (w *WebServer) Start() {
-	w.router.Run(w.webServerPort)
+	w.router.Run(fmt.Sprintf(":%s", w.webServerPort))
 }

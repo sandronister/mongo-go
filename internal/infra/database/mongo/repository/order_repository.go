@@ -1,4 +1,4 @@
-package database
+package repository
 
 import (
 	"context"
@@ -25,7 +25,7 @@ func (r *OrderRepository) Save(order *entity.Order) error {
 		return err
 	}
 
-	order.ID = req.InsertedID.(primitive.ObjectID)
+	order.ID = req.InsertedID.(primitive.ObjectID).Hex()
 	return nil
 }
 

@@ -44,7 +44,7 @@ func (o *OrderUseCase) Save(input OrderInputDTO) (OrderOutputDTO, error) {
 	}
 
 	return OrderOutputDTO{
-		ID:         order.ID.Hex(),
+		ID:         order.ID,
 		Price:      order.Price,
 		Tax:        order.Tax,
 		FinalPrice: order.FinalPrice,
@@ -62,7 +62,7 @@ func (o *OrderUseCase) List() ([]OrderOutputDTO, error) {
 
 	for _, order := range orders {
 		orderOutput = append(orderOutput, OrderOutputDTO{
-			ID:         order.ID.Hex(),
+			ID:         order.ID,
 			Price:      order.Price,
 			Tax:        order.Tax,
 			FinalPrice: order.FinalPrice,

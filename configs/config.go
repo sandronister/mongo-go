@@ -17,7 +17,8 @@ func LoadConfig(path string) (*Conf, error) {
 	var cfg *Conf
 	viper.SetConfigName("go_mongo")
 	viper.SetConfigType("env")
-	viper.SetConfigFile(path + ".env")
+	viper.AddConfigPath(path)
+	viper.SetConfigFile(".env")
 	viper.AutomaticEnv()
 	err := viper.ReadInConfig()
 	if err != nil {
