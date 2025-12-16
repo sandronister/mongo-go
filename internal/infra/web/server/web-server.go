@@ -3,19 +3,19 @@ package server
 import (
 	"fmt"
 
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 	"github.com/sandronister/mongo-go/internal/infra/web/handler"
 	"github.com/sandronister/mongo-go/internal/usecase"
 )
 
 type WebServer struct {
-	router        *gin.Engine
+	router        *fiber.App
 	webServerPort string
 }
 
 func NewWebServer(port string) *WebServer {
 	webserver := &WebServer{
-		router:        gin.Default(),
+		router:        fiber.New(),
 		webServerPort: port,
 	}
 
@@ -27,11 +27,11 @@ func (w *WebServer) AddHandlerOrder(order *usecase.OrderUseCase) {
 
 	orderRoute := w.router.Group("orders")
 	{
-		orderRoute.POST("", orderHandler.Create)
-		orderRoute.GET("", orderHandler.List)
+		orderRoute.Post("", orderHandler.Create)
+		orderRoute.Get("", orderHandler.List)
 	}
 }
 
 func (w *WebServer) Start() {
-	w.router.Run(fmt.Sprintf(":%s", w.webServerPort))
+	w.router.Listen(fmt.Sprintf(":%s", w.webServerPort))
 }

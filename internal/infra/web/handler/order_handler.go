@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 	"github.com/sandronister/mongo-go/internal/usecase"
 )
 
@@ -17,34 +17,31 @@ func NewOrderHandler(orderUseCase *usecase.OrderUseCase) *OrderHandler {
 	}
 }
 
-func (o *OrderHandler) Create(c *gin.Context) {
+func (o *OrderHandler) Create(c *fiber.Ctx) error {
 	var orderDTO usecase.OrderInputDTO
 
-	if err := c.ShouldBindJSON(&orderDTO); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+	if err := c.BodyParser(&orderDTO); err != nil {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error()})
-		return
 	}
 
 	output, err := o.orderUseCase.Save(orderDTO)
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error()})
-		return
 	}
 
-	c.JSON(http.StatusCreated, output)
+	return c.Status(http.StatusCreated).JSON(output)
 }
 
-func (o *OrderHandler) List(c *gin.Context) {
+func (o *OrderHandler) List(c *fiber.Ctx) error {
 	output, err := o.orderUseCase.List()
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error()})
-		return
 	}
 
-	c.JSON(http.StatusOK, output)
+	return c.Status(http.StatusOK).JSON(output)
 }
